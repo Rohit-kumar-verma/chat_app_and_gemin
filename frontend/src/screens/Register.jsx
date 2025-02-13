@@ -1,16 +1,37 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from '../config/axios';
 
 const Ragister = () => {
+
+    const [email, setEmail]= useState('')
+    const [password, setPassword]= useState('')
+
+    const navigate=useNavigate()
+
+    function submitHandler(e){
+        e.preventDefault()
+        axios.post('/users/register',{
+            email,
+            password
+        }).then((res)=>{
+            console.log(res);
+            navigate('/')
+        }).catch((err)=>{
+            console.log(err);
+        })
+    }
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
       <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center">Ragister</h2>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={submitHandler}>
           <div>
             <label className="block mb-2 text-sm font-medium">Email</label>
             <input
               type="email"
+              onChange={(e)=>setEmail(e.target.value)}
               className="w-full px-4 py-2 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your email"
               required
@@ -20,6 +41,7 @@ const Ragister = () => {
             <label className="block mb-2 text-sm font-medium">Password</label>
             <input
               type="password"
+              onChange={(e)=>setPassword(e.target.value)}
               className="w-full px-4 py-2 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your password"
               required

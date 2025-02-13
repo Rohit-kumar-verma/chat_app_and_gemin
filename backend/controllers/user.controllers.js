@@ -15,6 +15,7 @@ export const createUserController=async(req, res)=>{
         const user= await userService.createUser(req.body)
 
         const token = await user.generateJWT()
+        delete user._doc.password
         return res.status(200).json({user,token})
 
     } catch (error) {
@@ -43,7 +44,8 @@ export const userLoginController=async(req, res)=>{
             return res.status(401).json({errors:"Invalied Credinatialas"})
         }
 
-        const token=await user.generateJWT()    
+        const token=await user.generateJWT()   
+        delete user._doc.password 
         res.status(200).json({user, token})
 
     }
