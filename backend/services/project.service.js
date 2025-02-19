@@ -25,3 +25,32 @@ export const createProject= async ({name, userId})=>{
 
     return project
 }
+
+
+export const getAllProjectByUserId= async({userId})=>{
+    if(!userId){
+        throw new Error('User is required')
+    }
+
+    const allUserProjects= await projectModel.find({users:userId})
+
+    return allUserProjects
+}
+ 
+
+export const addUserToProject = async ({ projectId, users }) => {
+    if (!projectId) {
+        throw new Error("Project ID is required");
+    }
+    if (!mongoose.Types.ObjectId.isValid(projectId)) {
+        throw new Error("Invalid Project ID");
+    }
+    if (!users || !Array.isArray(users) || users.length === 0) {
+        throw new Error("Users must be a non-empty array");
+    }
+    for (const userId of users) {
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            throw new Error(`Invalid User ID: ${userId}`);
+        }
+    }
+};

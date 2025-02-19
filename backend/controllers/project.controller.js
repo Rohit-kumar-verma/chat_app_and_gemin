@@ -24,3 +24,34 @@ export const createProject=async (req,res)=>{
         res.status(400).send(err.message)
     }
 }
+
+export const getAllProjects=async (req,res)=>{
+    const errors= validationResult(req)
+
+    try {
+        
+        const loggedInUser= await userModel.findOne({email:req.user.email})
+        const allUserProjects= await projectService.getAllProjectByUserId({userId: loggedInUser._id})
+
+        res.status(200).json(allUserProjects)
+
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err.message)
+    }
+}
+
+export const addUserToProject=async (req,res)=>{
+    const errors= validationResult(req)
+
+    try {
+        
+        const {projectId, users}= req.body
+
+        // res.status(200).json(allUserProjects)
+
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err.message)
+    }
+}
