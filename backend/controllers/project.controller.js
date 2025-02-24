@@ -63,3 +63,21 @@ export const addUserToProject=async (req,res)=>{
         res.status(400).send(err.message)
     }
 }
+
+export const getProjectById=async(req, res)=>{
+    const errors= validationResult(req)
+    const {projectId}= req.params
+
+    try {
+       
+        const project= await projectService.getProjectById({projectId})
+
+        res.status(200).json(project)
+
+        
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err.message)
+    }
+
+}
