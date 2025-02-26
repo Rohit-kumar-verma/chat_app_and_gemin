@@ -6,7 +6,7 @@ function Home() {
     const { user } = useContext(UserContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [projectName, setProjectName] = useState('');
-    const [projects, setPorjects] = useState();
+    const [projects, setProjects] = useState();
 
     function createProject(e) {
         e.preventDefault();
@@ -25,7 +25,7 @@ function Home() {
         axios.get('/projects/all')
         .then((res)=>{
             console.log(res.data);
-            setPorjects(res.data.projects)
+            setProjects(res.data)
         })
         .catch((err)=>{
             console.log(err);
@@ -39,13 +39,14 @@ function Home() {
                     className='p-4 font-bold border border-slate-300 rounded-md' 
                     onClick={() => setIsModalOpen(true)}
                 >
-                 Project   <i className="ri-link ml-2"></i>
+                 Projects   <i className="ri-link ml-2"></i>
                 </button>
 
                  {projects?.length > 0 ? (
                     projects.map((project) => (
-                        <div key={project._id} className="project p-4">
+                        <div key={project._id} className="p=roject ml-3 p-4 border border-slate-300 rounded-md font-semibold flex flex-col">
                             {project.name}
+                            <p className='mt-2 font-bold flex items-center justify-center'> <i className="ri-user-line"></i> Collaborator: {project.users.length}</p>
                         </div>
                     ))
                 ) : (
