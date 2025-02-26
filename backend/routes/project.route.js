@@ -18,6 +18,11 @@ authMiddleware.authUser,
 projectController.getAllProjects
 )
 
+router.get('/get-project/:projectID', 
+authMiddleware.authUser,
+projectController.getProjectById
+)
+
 router.put(
     '/add-user',
     authMiddleware.authUser,

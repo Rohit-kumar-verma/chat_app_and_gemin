@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../context/user.context';
 import axios from '../config/axios'
 
@@ -6,6 +6,7 @@ function Home() {
     const { user } = useContext(UserContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [projectName, setProjectName] = useState('');
+    const [projects, setPorjects] = useState();
 
     function createProject(e) {
         e.preventDefault();
@@ -20,16 +21,36 @@ function Home() {
           console.log(error);
         })
     }
+     useEffect(()=>{
+        axios.get('/projects/all')
+        .then((res)=>{
+            console.log(res.data);
+            setPorjects(res.data.projects)
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+     }, [])
 
     return (
         <main className='p-4'>
-            <div className='projects'>
+            <div className='projects flex flex-wrap'>
                 <button 
                     className='p-4 font-bold border border-slate-300 rounded-md' 
                     onClick={() => setIsModalOpen(true)}
                 >
                  Project   <i className="ri-link ml-2"></i>
                 </button>
+
+                 {projects?.length > 0 ? (
+                    projects.map((project) => (
+                        <div key={project._id} className="project p-4">
+                            {project.name}
+                        </div>
+                    ))
+                ) : (
+                    <p></p>
+                )}
             </div>
             
             {isModalOpen && (
